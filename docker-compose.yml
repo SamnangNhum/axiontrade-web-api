@@ -1,0 +1,33 @@
+version: "3.8"
+
+services:
+  strapi:
+    image: strapi/strapi:latest
+    container_name: strapi
+    ports:
+      - "1337:1337"
+    environment:
+      DATABASE_CLIENT: mysql
+      DATABASE_HOST: db
+      DATABASE_PORT: 3306
+      DATABASE_NAME: axion-db
+      DATABASE_USERNAME: axiontrade-db
+      DATABASE_PASSWORD: Axiontrade@168
+      DATABASE_SSL: "false"
+    volumes:
+      - ./app:/srv/app
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: Ax10nTr@d3!1G8&z
+      MYSQL_DATABASE: axion-db
+      MYSQL_USER: axiontrade-db
+      MYSQL_PASSWORD: Axiontrade@168
+    volumes:
+      - ./data:/var/lib/mysql
+    ports:
+      - "3306:3306"
