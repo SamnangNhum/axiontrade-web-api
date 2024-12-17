@@ -1,26 +1,26 @@
-# Use Node.js official image as the base image
+# Use Node.js as the base image
 FROM node:20
 
-# Set the working directory
+# Set working directory
 WORKDIR /srv/app
 
-# Copy package files first for dependency installation
+# Copy package files for dependency installation
 COPY package.json package-lock.json ./
 
-# Install dependencies (omit dev dependencies in production)
+# Install dependencies
 RUN npm install --omit=dev --legacy-peer-deps
 
-# Copy the rest of the project files into the container
+# Copy the rest of the project files
 COPY . .
 
-# Ensure correct permissions for the project directory
+# Change ownership and permissions for non-root user
 RUN chown -R node:node /srv/app
 
-# Switch to a non-root user for better security
+# Use the non-root user for better security
 USER node
 
-# Expose the default Strapi port
+# Expose Strapi port
 EXPOSE 1337
 
-# Start the Strapi server
+# Start Strapi server
 CMD ["npm", "start"]
