@@ -43,7 +43,7 @@ jobs:
       # Step 5: Optional Test - Run the image with Docker Compose
       - name: Test Docker Compose
         run: |
-          docker-compose up -d
+          docker compose up -d
           sleep 10  # Wait for services to initialize
           docker-compose ps
           docker-compose down
