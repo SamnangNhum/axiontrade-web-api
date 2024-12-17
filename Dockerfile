@@ -4,20 +4,17 @@ FROM node:20
 # Set the working directory
 WORKDIR /srv/app
 
-# Copy package files for dependencies
+# Copy only package files first for dependency installation
 COPY package.json package-lock.json ./
 
-# Install dependencies
-RUN npm install
+# Install dependencies without running scripts to speed up builds
+RUN npm install --omit=dev --legacy-peer-deps
 
-# Copy the rest of the application code
+# Copy the rest of the project files
 COPY . .
-
-# Build the Strapi app (if needed)
-RUN npm run build
 
 # Expose Strapi port
 EXPOSE 1337
 
-# Start Strapi server
+# Start Strapi server directly
 CMD ["npm", "start"]
