@@ -1,6 +1,6 @@
 name: CI/CD - Build and Push to GHCR
 
-# Trigger the workflow on pushes to the main branch
+# Trigger the workflow on pushes to the develop branch
 on:
   push:
     branches:
@@ -24,16 +24,21 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      # Step 3: Build the Docker image
+      # Step 3: Build the Docker image (ensure name is lowercase)
       - name: Build Docker Image
         run: |
-          docker build -t ghcr.io/${{ github.repository_owner }}/axion-webapi:latest .
-
+          IMAGE_NAME=ghcr.io/${{ github.repository_owner }}/axion-webapi:latest
+          IMAGE_NAME=$(echo "$IMAGE_NAME" | tr '[:upper:]' '[:lower:]')  # Convert to lowercase
+          echo "Building image: $IMAGE_NAME"
+          docker build -t $IMAGE_NAME .
 
       # Step 4: Push the Docker image to GHCR
       - name: Push Docker Image to GHCR
         run: |
-          docker push ghcr.io/${{ github.repository_owner }}/axion-webapi:latest
+          IMAGE_NAME=ghcr.io/${{ github.repository_owner }}/axion-webapi:latest
+          IMAGE_NAME=$(echo "$IMAGE_NAME" | tr '[:upper:]' '[:lower:]')  # Convert to lowercase
+          echo "Pushing image: $IMAGE_NAME"
+          docker push $IMAGE_NAME
 
       # Step 5: Optional Test - Run the image with Docker Compose
       - name: Test Docker Compose
