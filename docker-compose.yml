@@ -17,6 +17,7 @@ services:
     volumes:
       - ./app:/srv/app
       - /srv/app/node_modules
+    depends_on:
       - db
 
   db:
