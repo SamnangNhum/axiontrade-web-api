@@ -4,17 +4,23 @@ FROM node:20
 # Set the working directory
 WORKDIR /srv/app
 
-# Copy only package files first for dependency installation
+# Copy package files first for dependency installation
 COPY package.json package-lock.json ./
 
-# Install dependencies without running scripts to speed up builds
+# Install dependencies (omit dev dependencies in production)
 RUN npm install --omit=dev --legacy-peer-deps
 
-# Copy the rest of the project files
+# Copy the rest of the project files into the container
 COPY . .
 
-# Expose Strapi port
+# Ensure correct permissions for the project directory
+RUN chown -R node:node /srv/app
+
+# Switch to a non-root user for better security
+USER node
+
+# Expose the default Strapi port
 EXPOSE 1337
 
-# Start Strapi server directly
+# Start the Strapi server
 CMD ["npm", "start"]
