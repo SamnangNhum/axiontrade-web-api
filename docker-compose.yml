@@ -9,7 +9,7 @@ services:
     environment:
       DATABASE_CLIENT: mysql
       DATABASE_HOST: db
-      DATABASE_PORT: 3333
+      DATABASE_PORT: 3306 # Use MySQL's internal port
       DATABASE_NAME: axion-db
       DATABASE_USERNAME: axiontrade-db
       DATABASE_PASSWORD: Axiontrade@168
@@ -18,6 +18,8 @@ services:
       - ./app:/srv/app
     depends_on:
       - db
+    networks:
+      - app-network
 
   db:
     image: mysql:8
@@ -31,3 +33,9 @@ services:
       - "3333:3306"
     volumes:
       - ./data:/var/lib/mysql
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
