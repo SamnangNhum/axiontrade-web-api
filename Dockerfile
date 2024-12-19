@@ -1,41 +1,32 @@
-# Use Node.js 20 as the base image
-FROM node:20 AS builder
-
-# Set environment variables for production
-ENV NODE_ENV=production
+# Use Node.js as the base image
+FROM node:20-alpine
 
 # Set working directory
 WORKDIR /srv/app
 
-# Copy package files first to leverage Docker layer caching
+# Copy package.json and package-lock.json for dependency installation
 COPY package.json package-lock.json ./
 
-# Install production dependencies
-RUN npm install 
+# Install dependencies
+RUN npm install --legacy-peer-deps --omit=dev
 
-# Copy the rest of the application code
+# Copy the rest of the application files
 COPY . .
 
-# Build the application (optional for Strapi if applicable)
-# RUN npm run build
+# Build the admin panel
+RUN npm run build
 
-# Change ownership and permissions for non-root user
-RUN chown -R node:node /srv/app
+# Ensure proper permissions
+RUN chown -R node:node /srv/app && chmod -R 775 /srv/app
 
-# Use Node.js official image for runtime (final stage for smaller image size)
-FROM node:20-slim
+# Switch to a non-root user for better security
+USER node
 
-# Set environment variables for production
+# Set the environment to production
 ENV NODE_ENV=production
 
-# Set working directory
-WORKDIR /srv/app
-
-# Copy files from the build stage
-COPY --from=builder /srv/app /srv/app
-
-# Expose the Strapi port
+# Expose the application port
 EXPOSE 1337
 
-# Start the Strapi server
+# Start the application
 CMD ["npm", "start"]
