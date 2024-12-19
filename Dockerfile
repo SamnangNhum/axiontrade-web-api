@@ -34,9 +34,6 @@ WORKDIR /srv/app
 # Copy files from the build stage
 COPY --from=builder /srv/app /srv/app
 
-# Use non-root user for better security
-USER node
-
 # Expose the Strapi port
 EXPOSE 1337
 
