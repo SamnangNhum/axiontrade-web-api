@@ -6,8 +6,8 @@ module.exports = ({ env }) => {
   const connections = {
     mysql: {
       connection: {
-        host: env("DATABASE_HOST", "localhost"),
-        port: env.int("DATABASE_PORT", 3306),
+        host: env("DATABASE_HOST", "dbhost"),
+        port: env.int("DATABASE_PORT", 3333),
         database: env("DATABASE_NAME", "strapi"),
         user: env("DATABASE_USERNAME", "strapi"),
         password: env("DATABASE_PASSWORD", "strapi"),
