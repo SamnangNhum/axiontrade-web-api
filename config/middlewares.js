@@ -5,8 +5,11 @@ module.exports = [
   {
     name: "strapi::cors",
     config: {
-      origin: ["https://axiontrade.konexdigital.com"],
-
+      enabled: true, // Explicitly enable CORS
+      origin: [
+        "https://axiontrade.konexdigital.com", // Your allowed origin(s)
+        "http://localhost:3000", // Add localhost for development if needed
+      ],
       methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
       headers: [
         "Content-Type",
