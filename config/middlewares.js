@@ -5,9 +5,17 @@ module.exports = [
   {
     name: "strapi::cors",
     config: {
-      headers: "*",
-      origin: "*",
-      methods: ["GET", "POST", "PUT", "DELETE"],
+      origin: ["https://axiontrade.konexdigital.com"],
+
+      methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+      headers: [
+        "Content-Type",
+        "Authorization",
+        "Origin",
+        "Accept",
+        "X-Requested-With",
+      ],
+      keepHeadersOnError: true,
     },
   },
   "strapi::poweredBy",
